@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Componentes Vuetify</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+</head>
+
+<body>
+    <div id="app">
+        <v-app>
+            <v-main>
+
+                <template>
+                    <v-container fluid>
+                        <v-row justify="center">
+                            <v-subheader>Today</v-subheader>
+
+                            <v-expansion-panels popout>
+                                <v-expansion-panel v-for="(message, i) in messages" :key="i" hide-actions>
+                                    <v-expansion-panel-header>
+                                        <v-row align="center" class="spacer" no-gutters>
+                                            <v-col cols="4" sm="2" md="1">
+                                                <v-avatar size="36px">
+                                                    <img v-if="message.avatar" alt="Avatar"
+                                                        src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460">
+                                                    <v-icon v-else :color="message.color" v-text="message.icon">
+                                                    </v-icon>
+                                                </v-avatar>
+                                            </v-col>
+
+                                            <v-col class="hidden-xs-only" sm="5" md="3">
+                                                <strong v-html="message.name"></strong>
+                                                <span v-if="message.total" class="grey--text">
+                                                    &nbsp;({{ message.total }})
+                                                </span>
+                                            </v-col>
+
+                                            <v-col class="text-no-wrap" cols="5" sm="3">
+                                                <v-chip v-if="message.new" :color="`${message.color} lighten-4`"
+                                                    class="ml-0 mr-2 black--text" label small>
+                                                    {{ message.new }} new
+                                                </v-chip>
+                                                <strong v-html="message.title"></strong>
+                                            </v-col>
+
+                                            <v-col v-if="message.excerpt"
+                                                class="grey--text text-truncate hidden-sm-and-down">
+                                                &mdash;
+                                                {{ message.excerpt }}
+                                            </v-col>
+                                        </v-row>
+                                    </v-expansion-panel-header>
+
+                                    <v-expansion-panel-content>
+                                        <v-divider></v-divider>
+                                        <v-card-text v-text="lorem"></v-card-text>
+                                    </v-expansion-panel-content>
+                                </v-expansion-panel>
+                            </v-expansion-panels>
+                        </v-row>
+                    </v-container>
+
+                    <v-container fluid>
+                        <v-row>
+                            <v-col>
+                                <v-card max-width="380" class="mx-auto">
+                                    <v-img height="200px"
+                                        src="https://cdn.pixabay.com/photo/2020/07/12/07/47/bee-5396362_1280.jpg">
+                                        <v-app-bar flat color="rgba(0, 0, 0, 0)">
+                                            <v-app-bar-nav-icon color="white"></v-app-bar-nav-icon>
+
+                                            <v-toolbar-title class="title white--text pl-0">
+                                                Messages
+                                            </v-toolbar-title>
+
+                                            <v-spacer></v-spacer>
+
+                                            <v-btn color="white" icon>
+                                                <v-icon>mdi-dots-vertical</v-icon>
+                                            </v-btn>
+                                        </v-app-bar>
+
+                                        <v-card-title class="white--text mt-8">
+                                            <v-avatar size="56">
+                                                <img alt="user"
+                                                    src="https://cdn.pixabay.com/photo/2020/06/24/19/12/cabbage-5337431_1280.jpg">
+                                            </v-avatar>
+                                            <p class="ml-3">
+                                                John Doe
+                                            </p>
+                                        </v-card-title>
+                                    </v-img>
+
+                                    <v-card-text>
+                                        <div class="font-weight-bold ml-8 mb-2">
+                                            Today
+                                        </div>
+
+                                        <v-timeline align-top dense>
+                                            <v-timeline-item v-for="message in messagesCard" :key="message.time"
+                                                :color="message.color" small>
+                                                <div>
+                                                    <div class="font-weight-normal">
+                                                        <strong>{{ message.from }}</strong> @{{ message.time }}
+                                                    </div>
+                                                    <div>{{ message.message }}</div>
+                                                </div>
+                                            </v-timeline-item>
+                                        </v-timeline>
+                                    </v-card-text>
+                                </v-card>
+                            </v-col>
+                            <v-col>
+                                <!--card loading--->
+                                <v-card :loading="loading" max-width="380" class="mx-auto">
+                                    <template slot="progress">
+                                        <v-progress-linear color="deep-purple" height="10" indeterminate>
+                                        </v-progress-linear>
+                                    </template>
+
+                                    <v-img height="250" src="https://cdn.vuetifyjs.com/images/cards/cooking.png">
+                                    </v-img>
+
+                                    <v-card-title>Cafe Badilico</v-card-title>
+
+                                    <v-card-text>
+                                        <v-row align="center" class="mx-0">
+                                            <v-rating :value="4.5" color="amber" dense half-increments readonly
+                                                size="14"></v-rating>
+
+                                            <div class="grey--text ml-4">
+                                                4.5 (413)
+                                            </div>
+                                        </v-row>
+
+                                        <div class="my-4 subtitle-1">
+                                            $ • Italian, Cafe
+                                        </div>
+
+                                        <div>Small plates, salads & sandwiches - an intimate setting with 12 indoor
+                                            seats plus patio seating.</div>
+                                    </v-card-text>
+
+                                    <v-divider class="mx-4"></v-divider>
+
+                                    <v-card-title>Tonight's availability</v-card-title>
+
+                                    <v-card-text>
+                                        <v-chip-group v-model="selection"
+                                            active-class="deep-purple accent-4 white--text" column>
+                                            <v-chip>5:30PM</v-chip>
+
+                                            <v-chip>7:30PM</v-chip>
+
+                                            <v-chip>8:00PM</v-chip>
+
+                                            <v-chip>9:00PM</v-chip>
+                                        </v-chip-group>
+                                    </v-card-text>
+
+                                    <v-card-actions>
+                                        <v-btn color="deep-purple lighten-2" text @click="reserve">
+                                            Reserve
+                                        </v-btn>
+                                    </v-card-actions>
+                                </v-card>
+                            </v-col>
+                            <v-col>
+                                <v-card max-width="380" class="mx-auto">
+                                    <v-img src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg" height="200px">
+                                    </v-img>
+
+                                    <v-card-title>
+                                        Top western road trips
+                                    </v-card-title>
+
+                                    <v-card-subtitle>
+                                        1,000 miles of wonder
+                                    </v-card-subtitle>
+
+                                    <v-card-actions>
+                                        <v-btn color="orange lighten-2" text>
+                                            Explore
+                                        </v-btn>
+
+                                        <v-spacer></v-spacer>
+
+                                        <v-btn icon @click="show = !show">
+                                            <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+                                        </v-btn>
+                                    </v-card-actions>
+
+                                    <v-expand-transition>
+                                        <div v-show="show">
+                                            <v-divider></v-divider>
+
+                                            <v-card-text>
+                                                I'm a thing. But, like most politicians, he promised more than he
+                                                could
+                                                deliver. You won't have time for sleeping, soldier, not with all the
+                                                bed
+                                                making you'll be doing. Then we'll go with that data file! Hey, you
+                                                add
+                                                a one and two zeros to that or we walk! You're going to do his
+                                                laundry?
+                                                I've got to find a way to escape.
+                                            </v-card-text>
+                                        </div>
+                                    </v-expand-transition>
+                                </v-card>
+                            </v-col>
+                        </v-row>
+                    </v-container>
+                    <v-footer padless>
+                        <v-col class="text-center" cols="12">
+                            {{ new Date().getFullYear() }} — <strong>Vuetify <v-icon>mdi-heart</v-icon></strong>
+                        </v-col>
+                    </v-footer>
+                </template>
+
+
+            </v-main>
+        </v-app>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            vuetify: new Vuetify(),
+            data: {
+                messagesCard: [{
+                        from: 'You',
+                        message: `Sure, I'll see you later.`,
+                        time: '10:42am',
+                        color: 'deep-purple lighten-1',
+                    },
+                    {
+                        from: 'John Doe',
+                        message: 'Yeah, sure. Does 1:00pm work?',
+                        time: '10:37am',
+                        color: 'green',
+                    },
+                    {
+                        from: 'You',
+                        message: 'Did you still want to grab lunch today?',
+                        time: '9:47am',
+                        color: 'deep-purple lighten-1',
+                    },
+                ],
+                messages: [{
+                        avatar: 'https://avatars0.githubusercontent.com/u/9064066?v=4&s=460',
+                        name: 'John Leider',
+                        title: 'Welcome to Vuetify!',
+                        excerpt: 'Thank you for joining our community...',
+                    },
+                    {
+                        color: 'red',
+                        icon: 'mdi-account-multiple',
+                        name: 'Social',
+                        new: 1,
+                        total: 3,
+                        title: 'Twitter',
+                    },
+                    {
+                        color: 'teal',
+                        icon: 'mdi-tag',
+                        name: 'Promos',
+                        new: 2,
+                        total: 4,
+                        title: 'Shop your way',
+                        exceprt: 'New deals available, Join Today',
+                    },
+                ],
+                lorem: 'Lorem ipsum dolor sit amet, at aliquam vivendum vel, everti delicatissimi cu eos. Dico iuvaret debitis mel an, et cum zril menandri. Eum in consul legimus accusam. Ea dico abhorreant duo, quo illum minimum incorrupte no, nostro voluptaria sea eu. Suas eligendi ius at, at nemore equidem est. Sed in error hendrerit, in consul constituam cum.',
+
+                loading: false,
+                selection: 1,
+                show: false,
+            },
+            methods: {
+                reserve() {
+                    this.loading = true
+
+                    setTimeout(() => (this.loading = false), 2000)
+                },
+            },
+
+        })
+    </script>
+</body>
+
+</html>
